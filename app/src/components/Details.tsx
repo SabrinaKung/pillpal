@@ -2,12 +2,25 @@
 import Image from "next/image";
 import { DetailsObj } from "@/lib/utils";
 import DialogWithButton from "./DialogWithButton";
-
+import { useSpeech } from "react-text-to-speech";
 interface IDetailsProps {
   data: DetailsObj;
 }
 
 export default function Details({ data }: IDetailsProps) {
+  const {} = useSpeech({
+    text: data.description,
+    pitch: 1.4,
+    rate: 0.5,
+    volume: 1,
+    lang: "en-US",
+    voiceURI: "com.apple.eloquence.en-US.Grandpa",
+    autoPlay: true,
+    highlightText: false,
+    showOnlyHighlightedText: false,
+    highlightMode: "word",
+  });
+
   return (
     <div className="flexflex-col min-h-screen">
       <div className="p-5 mt-3">
