@@ -9,7 +9,7 @@ import { DetailsObj } from "@/lib/utils";
 const defaultDetails: DetailsObj = {
   description:
     "Hydrocodone and acetaminophen is a combination medicine used to relieve moderate to severe pain. ",
-  interactions: { Test: ["Loading..."] },
+  interactions: { "moderate interactions": {} },
   sideEffects: { Test: ["Loading..."] },
   imgUrl: "https://www.drugs.com/images/pills/nlm/675440670.jpg",
 };
