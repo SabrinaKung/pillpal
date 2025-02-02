@@ -8,7 +8,7 @@ load_dotenv()
 client = openai.OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
 def drug_interaction_prompt(drug_name):
-    return f"{drug_name}: Provide a short summary for an elderly patient, no jargon, less than 50 words."
+    return f"{drug_name}: Provide a short summary for an elderly patient, no jargon, less than 30 words."
 
 def chat_with_gpt(prompt, model="gpt-4o-mini", max_tokens=4096):
     messages = [{"role": "user", "content": prompt}]
@@ -24,7 +24,7 @@ def gpt_summarize(json_file, save_dir):
         pill_data = json.load(f)
 
     # Format drug data for summarization
-    drug_summary_prompt = f"Please provide a concise summary of the drug details in under 80 words, focusing on key information without following a readme format, less than 3 paragraphs: {json.dumps(pill_data, indent=2)}"
+    drug_summary_prompt = f"Please provide a concise summary of the drug details in under 60 words, focusing on key information without following a readme format, less than 3 paragraphs: {json.dumps(pill_data, indent=2)}"
     drug_summary = chat_with_gpt(drug_summary_prompt)
 
     # Initialize dictionary to store responses

@@ -30,19 +30,20 @@ def load_csv_mapping(file_path):
 def create_prompt_guide(color_mapping, shape_mapping):
     color_guide = "\n".join([f"{value}: {color}" for color, value in color_mapping.items()])
     shape_guide = "\n".join([f"{value}: {shape}" for shape, value in shape_mapping.items()])
-    return f"""Analyze the pill image and provide the imprint, color number, and shape number.
+    return f"""Analyze the pill image and provide the imprint, color number, shape number, and whether the image contains a pill.
     I will format your response into a URL to search on drugs.com.
     Use ONLY these numeric values:
     Colors:
-    {color_guide}
+{color_guide}
     Shapes:
-    {shape_guide}
-    Return ONLY a JSON with three fields:
-    {{
-        "imprint": "text on pill",
-        "color": "number from color list",
-        "shape": "number from shape list"
-    }}"""
+{shape_guide}
+    Return ONLY a JSON with four fields:
+{{
+    "imprint": "text on pill",
+    "color": "number from color list",
+    "shape": "number from shape list",
+    "is_pill": true/false
+}}"""
 
 def save_base64_image(base64_string):
     try:
@@ -73,7 +74,14 @@ def chat_with_gpt(prompt, image_path=None, model="gpt-4o-mini", max_tokens=4096)
     )
     
     try:
+        print("response.choices[0].message.content:", response.choices[0].message.content)
         response_json = json.loads(response.choices[0].message.content)
+        
+        # Check if is_pill is present and false
+        if not response_json.get('is_pill', True):
+            return "Error: Image does not contain a pill"
+            
+        # If is_pill is true or not present, proceed with URL creation
         url = f"https://www.drugs.com/imprints.php?imprint={response_json['imprint']}&color={response_json['color']}&shape={response_json['shape']}"
         return url
     except json.JSONDecodeError:
