@@ -3,7 +3,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 
 const PhotoUpload: React.FC = () => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [, setSelectedFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
