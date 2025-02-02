@@ -29,6 +29,7 @@ def gpt_summarize(json_file, save_dir):
 
     # Initialize dictionary to store responses
     processed_data = {
+        "imgUrl": pill_data.get("imgUrl", {}),
         "description": drug_summary,
         "interactions": {"major interactions": {}, "moderate interactions": {}},
         "sideEffects": pill_data.get("sideEffects", {})
