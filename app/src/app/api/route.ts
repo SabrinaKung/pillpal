@@ -1,5 +1,5 @@
 import { DetailsObj } from "@/lib/utils";
-export const BACKEND_ENDPOINT =
+const BACKEND_ENDPOINT =
   "https://679ee898946b0e23c0644a61.mockapi.io/api/test";
 
 export async function GET() {
