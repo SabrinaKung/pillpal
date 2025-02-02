@@ -1,5 +1,6 @@
 import { DetailsObj } from "@/lib/utils";
 const BACKEND_ENDPOINT = "https://pills-recognition.onrender.com/analyze_pill";
+export const maxDuration = 60 * 5; // 5 minutes
 
 export async function GET() {
   const res = await fetch(`${BACKEND_ENDPOINT}`);
