@@ -5,6 +5,7 @@ import { uploadPhoto } from "@/app/api/utils";
 import { DetailsObj } from "@/lib/utils";
 import Compressor from "compressorjs";
 import Loading from "./Loading";
+import { useToast } from "@/hooks/use-toast";
 
 interface IPhotoUploadProps {
   onPhotoUploaded: (res: DetailsObj) => void;
@@ -14,6 +15,7 @@ export default function PhotoUpload({ onPhotoUploaded }: IPhotoUploadProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -37,12 +39,21 @@ export default function PhotoUpload({ onPhotoUploaded }: IPhotoUploadProps) {
   useEffect(() => {
     if (selectedFile) {
       setLoading(true);
-      uploadPhoto(selectedFile).then((res) => {
-        onPhotoUploaded(res);
-        setLoading(false);
-      });
+      uploadPhoto(selectedFile)
+        .then((res) => {
+          onPhotoUploaded(res);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setLoading(false);
+          toast({
+            variant: "destructive",
+            title: "Uh oh! We couldn't recognize the pill.",
+            description: "Please try another one. " + err,
+          });
+        });
     }
-  }, [onPhotoUploaded, selectedFile]);
+  }, [onPhotoUploaded, selectedFile, toast]);
 
   return (
     <div className="flex flex-col items-center justify-center p-4 rounded-lg h-[75vh]">
