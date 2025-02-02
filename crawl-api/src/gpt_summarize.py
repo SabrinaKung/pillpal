@@ -20,12 +20,18 @@ def chat_with_gpt(prompt, model="gpt-4o-mini", max_tokens=4096):
     return response.choices[0].message.content
 
 def gpt_summarize(json_file, save_dir):
+    #import time
+    #start_time = time.time()
+
     with open(json_file, "r") as f:
         pill_data = json.load(f)
 
     # Format drug data for summarization
     drug_summary_prompt = f"Provide a concise summary of the drug information: {json.dumps(pill_data, indent=2)}"
+    #drug_summary_runtime = time.time()
     drug_summary = chat_with_gpt(drug_summary_prompt)
+    #drug_summary_runtime = time.time() - drug_summary_runtime
+    #print("drug_summary_runtime", drug_summary_runtime)
 
     # Initialize dictionary to store responses
     processed_data = {
@@ -37,13 +43,17 @@ def gpt_summarize(json_file, save_dir):
     # Process interactions
     for interaction_type in ["major interactions", "moderate interactions"]:
         for drug in pill_data.get("interactions", {}).get(interaction_type, []):
+            #interaction_summary_runtime = time.time()
             interaction_summary = chat_with_gpt(drug_interaction_prompt(drug))
+            #interaction_summary_runtime = time.time() - interaction_summary_runtime
+            #print("interaction_summary_runtime", interaction_summary_runtime)
             processed_data["interactions"][interaction_type][drug] = interaction_summary
 
     save_path = os.path.join(save_dir,"processed_pill_info.json")
     with open(save_path, "w") as f:
         json.dump(processed_data, f, indent=4)
 
+    #print("total_runtime", time.time() - start_time)
     return save_path
 
 
