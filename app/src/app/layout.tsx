@@ -24,6 +24,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="theme-color" content="#c084fc" />
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
