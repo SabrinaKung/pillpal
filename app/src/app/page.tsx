@@ -5,6 +5,7 @@ import PhotoUpload from "@/components/PhotoUpload";
 import Details from "@/components/Details";
 import { useState } from "react";
 import { DetailsObj } from "@/lib/utils";
+import LandingPage from "@/components/LandingPage";
 
 const defaultDetails: DetailsObj = {
   description:
@@ -15,15 +16,16 @@ const defaultDetails: DetailsObj = {
 };
 
 export default function Home() {
-  const [page, setPage] = useState("home");
+  const [page, setPage] = useState("landing");
   const [details, setDetails] = useState(defaultDetails);
 
   const handlePhotoUploaded = (data: DetailsObj) => {
     setDetails(data);
     setPage("details");
   };
-
-  if (page === "home") {
+  if (page === "landing") {
+    return <LandingPage onNextPage={() => setPage("home")} />;
+  } else if (page === "home") {
     return (
       <div className="flex flex-col items-center min-h-screen">
         <Header />
