@@ -6,6 +6,8 @@ from dotenv import load_dotenv
 import csv
 import json
 import tempfile
+from query import query
+from gpt_summarize import gpt_summarize
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -44,7 +46,6 @@ def create_prompt_guide(color_mapping, shape_mapping):
 
 def save_base64_image(base64_string):
     try:
-        # Create a temporary file
         temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.jpg')
         image_data = base64.b64decode(base64_string)
         temp_file.write(image_data)
@@ -83,30 +84,47 @@ def chat_with_gpt(prompt, image_path=None, model="gpt-4o-mini", max_tokens=4096)
 @app.route('/analyze_pill', methods=['POST'])
 def analyze_pill():
     try:
-        # Check if the request contains the image
         if 'image' not in request.json:
             return jsonify({'error': 'No image provided'}), 400
 
-        # Get the base64 image from the request
         base64_image = request.json['image']
-        
-        # Save the base64 image to a temporary file
         temp_image_path = save_base64_image(base64_image)
         
         # Load mappings from CSV files
-        color_mapping = load_csv_mapping('color_type.txt')
-        shape_mapping = load_csv_mapping('shape_type.txt')
+        color_mapping = load_csv_mapping('category/color_type.txt')
+        shape_mapping = load_csv_mapping('category/shape_type.txt')
         
         # Create prompt with valid values
         prompt = create_prompt_guide(color_mapping, shape_mapping)
         
         # Process the image and get the URL
-        result = chat_with_gpt(prompt, image_path=temp_image_path)
+        query_url = chat_with_gpt(prompt, image_path=temp_image_path)
         
         # Clean up the temporary file
         os.unlink(temp_image_path)
+
+        if query_url.startswith('Error'):
+            return jsonify({'error': query_url}), 500
+
+        # Process with query and gpt_summarize
+        print(f"Querying {query_url}...")
+        json_dir = "./configs"
+        query_json_path = query(query_url, json_dir)
         
-        return jsonify({'url': result})
+        print(f"Summarizing {query_json_path}...")
+        gpt_json_path = gpt_summarize(query_json_path, json_dir)
+        
+        # Read the final summarized JSON
+        with open(gpt_json_path, 'r') as f:
+            summarized_data = json.load(f)
+        
+        return jsonify([summarized_data])
+        # return jsonify({
+        #     # 'url': query_url,
+        #     # 'query_json_path': query_json_path,
+        #     # 'gpt_json_path': gpt_json_path,
+        #     'summarized_data': summarized_data
+        # })
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
