@@ -7,9 +7,11 @@ import { useState } from "react";
 import { DetailsObj } from "@/lib/utils";
 
 const defaultDetails: DetailsObj = {
-  description: "Loading...",
-  interactions: "Loading...",
-  sideEffects: "Loading...",
+  description:
+    "Hydrocodone and acetaminophen is a combination medicine used to relieve moderate to severe pain. ",
+  interactions: { "Test": ["Loading..."] },
+  sideEffects: { "Test": ["Loading..."] },
+  imgUrl: "https://www.drugs.com/images/pills/nlm/675440670.jpg",
 };
 
 export default function Home() {
@@ -20,6 +22,10 @@ export default function Home() {
     setDetails(data);
     setPage("details");
   };
+
+  // // Testing
+  // return <Details data={defaultDetails} />;
+
   if (page === "home") {
     return (
       <div className="flex flex-col items-center min-h-screen">

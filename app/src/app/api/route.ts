@@ -1,6 +1,5 @@
 import { DetailsObj } from "@/lib/utils";
-const BACKEND_ENDPOINT =
-  "https://679ee898946b0e23c0644a61.mockapi.io/api/test";
+const BACKEND_ENDPOINT = "https://pills-recognition.onrender.com/analyze_pill";
 
 export async function GET() {
   const res = await fetch(`${BACKEND_ENDPOINT}`);
@@ -22,6 +21,8 @@ export async function POST(request: Request): Promise<Response> {
     body: JSON.stringify(body),
     headers: { "Content-Type": "application/json" },
   });
+
+  console.log(res);
 
   if (!res.ok) {
     return new Response("Error", { status: 400 });

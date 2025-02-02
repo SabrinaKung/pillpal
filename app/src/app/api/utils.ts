@@ -9,7 +9,11 @@ export async function uploadPhoto(file: File): Promise<DetailsObj> {
   reader.readAsDataURL(file);
   const base64data = await new Promise<string>((resolve) => {
     reader.onloadend = () => {
-      const base64 = reader.result as string;
+      // const base64 = reader.result as string;
+      const base64 = (reader.result as string).replace(
+        /^data:image\/[a-z]+;base64,/,
+        ""
+      );
       resolve(base64);
     };
   });
@@ -17,7 +21,10 @@ export async function uploadPhoto(file: File): Promise<DetailsObj> {
   // send request to server
   const response = await fetch("/api", {
     method: "POST",
-    body: JSON.stringify({ file: base64data }),
+    body: JSON.stringify({ image: base64data }),
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
   if (!response.ok) {
     throw new Error("Failed to upload photo");
