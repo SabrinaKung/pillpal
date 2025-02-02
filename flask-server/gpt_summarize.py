@@ -8,7 +8,7 @@ load_dotenv()
 client = openai.OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
 def drug_interaction_prompt(drug_name):
-    return f"{drug_name}: Provide a short summary for an elderly patient, no jargon, less than 30 words."
+    return f"{drug_name}: Provide a short summary for an elderly patient, no jargon, one sentence, less than 15 words."
 
 def chat_with_gpt(prompt, model="gpt-4o-mini", max_tokens=4096):
     messages = [{"role": "user", "content": prompt}]
@@ -31,12 +31,14 @@ def gpt_summarize(json_file, save_dir):
     processed_data = {
         "imgUrl": pill_data.get("imgUrl", {}),
         "description": drug_summary,
-        "interactions": {"major interactions": {}, "moderate interactions": {}},
+        #"interactions": {"major interactions": {}, "moderate interactions": {}},
+        "interactions": {"major interactions": {}},
         "sideEffects": pill_data.get("sideEffects", {})
     }
 
     # Process interactions
-    for interaction_type in ["major interactions", "moderate interactions"]:
+    # for interaction_type in ["major interactions", "moderate interactions"]:
+    for interaction_type in ["major interactions"]:
         for drug in pill_data.get("interactions", {}).get(interaction_type, []):
             interaction_summary = chat_with_gpt(drug_interaction_prompt(drug))
             processed_data["interactions"][interaction_type][drug] = interaction_summary
