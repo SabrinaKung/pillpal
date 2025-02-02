@@ -26,11 +26,24 @@ def parse_pill_page_from_query_url(query_url, base_url="https://www.drugs.com"):
     if a_tag:
         relative_href = a_tag.get("href")
         absolute_href = urljoin(base_url, relative_href)
-        return absolute_href
+    
+        first_card = soup.find("div", class_="ddc-pid-list").find("div", class_="ddc-card")
+    
+        if first_card:
+            img_tag = first_card.find("div", class_="ddc-pid-img pid-img-fit-133")
+            if img_tag and img_tag.get("data-image-src"):
+                img_url = img_tag["data-image-src"]
+                return absolute_href, img_url
+            else:
+                print("No image source found in the first card.")
+                return absolute_href, None
+        else:
+            print("No card found in the pid-list.")
+            return absolute_href, None
+    
     else:
         print("No matching <a> tag found.")
-        return None
-
+        return None, None
 
 def parse_pill_page(pill_url):
     response = requests.get(pill_url)
@@ -107,7 +120,7 @@ def parse_side_effects_page(side_effects_url):
 
 def query(query_url, save_dir):
     try:
-        pill_page = parse_pill_page_from_query_url(query_url)
+        pill_page, img_url = parse_pill_page_from_query_url(query_url)
         
         if pill_page:            
             description, interactions_page, side_effects_page = parse_pill_page(pill_page)            
@@ -117,6 +130,7 @@ def query(query_url, save_dir):
             description = " ".join(description.split())  # This removes extra spaces and normalizes the string
 
             combined_dict = {
+                "imgUrl": img_url,
                 "description": description,
                 "interactions": interaction_dict,
                 "sideEffects": side_effects_dict
