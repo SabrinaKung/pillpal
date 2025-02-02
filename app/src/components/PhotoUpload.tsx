@@ -3,6 +3,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { uploadPhoto } from "@/app/api/utils";
 import { DetailsObj } from "@/lib/utils";
+import Compressor from "compressorjs";
 
 interface IPhotoUploadProps {
   onPhotoUploaded: (res: DetailsObj) => void;
@@ -15,12 +16,17 @@ export default function PhotoUpload({ onPhotoUploaded }: IPhotoUploadProps) {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setSelectedFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      new Compressor(file, {
+        quality: 0.5,
+        success(result) {
+          setSelectedFile(result as File);
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            setPreview(reader.result as string);
+          };
+          reader.readAsDataURL(result);
+        },
+      });
     }
   };
 
