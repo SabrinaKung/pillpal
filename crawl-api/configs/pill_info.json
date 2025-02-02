@@ -1,18 +1,18 @@
 {
-    "general description": "Pill with imprint9 3 5510is Yellow, Round and has been identified as Mercaptopurine 50 mg. It is supplied by Teva Pharmaceuticals USA. Mercaptopurine is used in the treatment ofAcute Lymphoblastic Leukemiaand belongs to the drug classantimetabolites. There is positive evidence of human fetal risk during pregnancy. Mercaptopurine 50 mg is not a controlled substance under the Controlled Substances Act (CSA).",
+    "description": "Pill with imprint9 3 5510is Yellow, Round and has been identified as Mercaptopurine 50 mg. It is supplied by Teva Pharmaceuticals USA. Mercaptopurine is used in the treatment ofAcute Lymphoblastic Leukemiaand belongs to the drug classantimetabolites. There is positive evidence of human fetal risk during pregnancy. Mercaptopurine 50 mg is not a controlled substance under the Controlled Substances Act (CSA).",
     "interactions": {
-        "major_interactions": [
+        "major interactions": [
             "Humira (adalimumab)",
             "Remicade (infliximab)"
         ],
-        "moderate_interactions": [
+        "moderate interactions": [
             "Apriso (mesalamine)",
             "Asacol (mesalamine)",
             "Lialda (mesalamine)",
             "Pentasa (mesalamine)"
         ]
     },
-    "side effects": {
+    "sideEffects": {
         "More common side effects": [
             "black, tarry stools",
             "bleeding gums",

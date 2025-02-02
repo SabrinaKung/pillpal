@@ -4,6 +4,7 @@ import re
 from urllib.parse import urljoin
 import requests
 import json
+import os
 
 
 
@@ -67,17 +68,17 @@ def parse_interactions_page(interactions_url):
     major_items = interactions_list.find_all('li', class_='int_3')
     moderate_items = interactions_list.find_all('li', class_='int_2')
 
-    interaction_dict = {"major_interactions":[], "moderate_interactions":[]}
+    interaction_dict = {"major interactions":[], "moderate interactions":[]}
 
     for item in major_items:
         drug_name = item.find('a')
         if drug_name:
-            interaction_dict["major_interactions"].append(drug_name.text.strip())
+            interaction_dict["major interactions"].append(drug_name.text.strip())
 
     for item in moderate_items:
         drug_name = item.find('a')
         if drug_name:
-            interaction_dict["moderate_interactions"].append(drug_name.text.strip())
+            interaction_dict["moderate interactions"].append(drug_name.text.strip())
 
     return interaction_dict
 
@@ -104,7 +105,7 @@ def parse_side_effects_page(side_effects_url):
 
     return side_effects_dict
 
-def main(query_url):
+def query(query_url, save_dir):
     try:
         pill_page = parse_pill_page_from_query_url(query_url)
         
@@ -116,19 +117,24 @@ def main(query_url):
             description = " ".join(description.split())  # This removes extra spaces and normalizes the string
 
             combined_dict = {
-                "general description": description,
+                "description": description,
                 "interactions": interaction_dict,
-                "side effects": side_effects_dict
+                "sideEffects": side_effects_dict
             }
-            with open("pill_info.json", "w") as json_file:
-                json.dump(combined_dict, json_file, indent=4)    
+            save_path = os.path.join(save_dir,"pill_info.json")
+            with open(save_path, "w") as json_file:
+                json.dump(combined_dict, json_file, indent=4)   
 
+        return save_path 
+        
     except ValueError as ve:
         print("Value error:", ve)
     except Exception as e:
         print("Exception:", e)
 
 
+
 if __name__ == "__main__":
     query_url = "https://www.drugs.com/imprints.php?imprint=93551&color=&shape=0" 
-    main(query_url)
+    query(query_url, "./")
+    
