@@ -1,6 +1,5 @@
 import { DetailsObj } from "@/lib/utils";
-const BACKEND_ENDPOINT =
-  "https://679ee898946b0e23c0644a61.mockapi.io/api/test";
+const BACKEND_ENDPOINT = "https://pills-recognition.onrender.com/analyze_pill";
 
 export async function GET() {
   const res = await fetch(`${BACKEND_ENDPOINT}`);
@@ -10,7 +9,6 @@ export async function GET() {
   } else if (data.length === 0) {
     return new Response("No data", { status: 404 });
   }
-  console.log(data[0]);
 
   return new Response(JSON.stringify(data[0]), { status: 200 });
 }

@@ -7,6 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export interface DetailsObj {
   description: string;
-  interactions: string;
-  sideEffects: string;
+  interactions: object;
+  sideEffects: object;
+  imgUrl: string;
 }
