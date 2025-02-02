@@ -1,8 +1,9 @@
 "use client";
+import Image from "next/image";
 import React, { useState } from "react";
 
 const PhotoUpload: React.FC = () => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [, setSelectedFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -17,34 +18,28 @@ const PhotoUpload: React.FC = () => {
     }
   };
 
-  const handleUpload = () => {
-    if (selectedFile) {
-      // Handle the file upload logic here
-      console.log("File uploaded:", selectedFile);
-    }
-  };
-
   return (
-    <div className="flex flex-col items-center p-4 border border-gray-300 rounded-lg">
-      <input
-        type="file"
-        accept="image/*"
-        onChange={handleFileChange}
-        className="mb-4"
-      />
+    <div className="flex flex-col items-center justify-center p-4 rounded-lg h-[75vh]">
       {preview && (
-        <img
-          src={preview}
-          alt="Preview"
-          className="w-32 h-32 object-cover mb-4"
-        />
+        <Image src={preview} alt="Preview" width={300} height={300} />
       )}
-      <button
-        onClick={handleUpload}
-        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-      >
-        Upload Photo
-      </button>
+      <>
+        <label htmlFor="upload-photo" className="custom-file-label">
+          <Image
+            src="/camera-icon.png"
+            alt="Camera Icon"
+            width={128}
+            height={128}
+          ></Image>
+        </label>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          className="hidden"
+          id="upload-photo"
+        />
+      </>
     </div>
   );
 };
