@@ -1,8 +1,10 @@
 import React from "react";
+import Logo from "./Logo";
 
 const Header: React.FC = () => {
   return (
     <div className="bg-purple-400 w-full p-10 text-white rounded-bl-3xl rounded-br-3xl h-[25vh]">
+      <Logo />
       <div className="text-md mb-3">{"Welcome Back!"}</div>
       <div className="text-3xl">{"Let's find your medication."}</div>
     </div>
