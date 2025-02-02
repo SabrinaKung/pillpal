@@ -19,8 +19,8 @@ export default function PhotoUpload({ onPhotoUploaded }: IPhotoUploadProps) {
     const file = event.target.files?.[0];
     if (file) {
       new Compressor(file, {
-        quality: 0.5,
-        maxWidth: 250,
+        quality: 0.6,
+        maxWidth: 2048,
         mimeType: "image/jpeg",
         success(result) {
           setSelectedFile(result as File);
