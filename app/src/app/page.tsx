@@ -5,6 +5,7 @@ import PhotoUpload from "@/components/PhotoUpload";
 import Details from "@/components/Details";
 import { useState } from "react";
 import { DetailsObj } from "@/lib/utils";
+import Footer from "@/components/Footer";
 
 const defaultDetails: DetailsObj = {
   description:
@@ -28,6 +29,7 @@ export default function Home() {
       <div className="flex flex-col items-center min-h-screen">
         <Header />
         <PhotoUpload onPhotoUploaded={handlePhotoUploaded} />
+        <Footer />
       </div>
     );
   } else if (page === "details") {
