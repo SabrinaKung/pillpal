@@ -56,7 +56,7 @@ export default function PhotoUpload({ onPhotoUploaded }: IPhotoUploadProps) {
   }, [onPhotoUploaded, selectedFile, toast]);
 
   return (
-    <div className="flex flex-col items-center justify-center p-4 rounded-lg h-[66vh]">
+    <div className="flex flex-col items-center justify-center p-4 rounded-lg h-[58vh]">
       {loading && <Loading spinning={loading} />}
       {preview && (
         <Image src={preview} alt="Preview" width={300} height={300} />
