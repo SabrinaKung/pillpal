@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
 import { DetailsObj } from "@/lib/utils";
-// import TopHeader from "./TopHeader";
 import DialogWithButton from "./DialogWithButton";
 
 interface IDetailsProps {
@@ -9,10 +8,8 @@ interface IDetailsProps {
 }
 
 export default function Details({ data }: IDetailsProps) {
-  console.log("Details", data);
   return (
     <div className="flexflex-col min-h-screen">
-      {/* <TopHeader /> */}
       <div className="p-5 mt-3">
         <h1 className="mb-3 text-3xl font-bold">Summary</h1>
         <Image
@@ -30,11 +27,13 @@ export default function Details({ data }: IDetailsProps) {
             buttonText="Interactions"
             title="Interactions"
             description={data.interactions}
+            type="interactions"
           />
           <DialogWithButton
             buttonText="Side Effects"
             title="Side Effects"
             description={data.sideEffects}
+            type="sideEffects"
           />
         </div>
       </div>

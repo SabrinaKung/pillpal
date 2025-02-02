@@ -9,7 +9,6 @@ export async function GET() {
   } else if (data.length === 0) {
     return new Response("No data", { status: 404 });
   }
-  console.log(data[0]);
 
   return new Response(JSON.stringify(data[0]), { status: 200 });
 }
@@ -21,8 +20,6 @@ export async function POST(request: Request): Promise<Response> {
     body: JSON.stringify(body),
     headers: { "Content-Type": "application/json" },
   });
-
-  console.log(res);
 
   if (!res.ok) {
     return new Response("Error", { status: 400 });

@@ -12,15 +12,15 @@ interface IDialogWithButtonProps {
   buttonText: string;
   title: string;
   description: object;
+  type: string;
 }
 
 export default function DialogWithButton({
   buttonText,
   title,
   description,
+  type,
 }: IDialogWithButtonProps) {
-  Object.entries(description).map(([key, values]) => console.log(key, values));
-
   return (
     <>
       <Dialog>
@@ -30,9 +30,21 @@ export default function DialogWithButton({
         <DialogContent className="w-[90vw] min-h-[50vh] rounded-xl">
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
-            <DialogDescription className="text-left">
-              {Object.entries(description).map(([key, values]) =>
-                !Array.isArray(values) ? null : (
+            <DialogDescription className="text-left overflow-y-scroll max-h-[65vh]">
+              {type === "interactions" &&
+                Object.entries(description).map(([key, value]) => (
+                  <li key={key}>
+                    <strong>{key}:</strong>{" "}
+                    {Object.entries(value).map(([k, v]) => (
+                      <li key={k}>
+                        <strong>{k}:</strong> {v as string}
+                      </li>
+                    ))}
+                  </li>
+                ))}
+
+              {type === "sideEffects" &&
+                Object.entries(description).map(([key, values]) => (
                   <div key={key}>
                     <strong>{key}:</strong>
                     <ul>
@@ -41,8 +53,7 @@ export default function DialogWithButton({
                       ))}
                     </ul>
                   </div>
-                )
-              )}
+                ))}
             </DialogDescription>
           </DialogHeader>
         </DialogContent>
